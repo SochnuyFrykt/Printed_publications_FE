@@ -37,15 +37,17 @@ export default () => {
 
 		const onDropHandler = e => {
 			e.preventDefault()
+			console.log('мы в методе onDropHand')
+			console.log(e)
 			let files = [...e.dataTransfer.files]
-			console.log(files[0])
+			console.log(files)
 			doOCR(files[0])
 		}
 
-		const handleClick = () => {
-			// 👇️ open file input box on click of another element
-			if (fileInputRef.current != null) {
-				fileInputRef.current.click()
+		const handleChange = function (e) {
+			e.preventDefault()
+			if (e.target.files && e.target.files[0]) {
+				doOCR(e.target.files[0])
 			}
 		}
 
@@ -78,7 +80,8 @@ export default () => {
 					id='filePicker'
 					style={{ visibility: 'hidden' }}
 					type='file'
-					onChange={onDropHandler}
+					ref={fileInputRef}
+					onChange={handleChange}
 				></input>
 			</div>
 		)
@@ -171,15 +174,37 @@ export default () => {
 			<div className={style.container}>
 				<h1 style={{ marginBottom: '52px' }}>Добавление печатных изданий</h1>
 				<div className={style.elements}>
-				<div className={style.containerOcr}>
-					{DragDropFile()}
-					<div className={style.containerElement}>
-						{isLoading ? (
-							<Skeleton loading />
-						) : (
-							ocrText && <p style={{ width: '592px' }}>{ocrText}</p>
-						)}
+					<div className={style.containerOcr}>
+						{DragDropFile()}
+						<div className={style.containerElement}>
+							{isLoading ? (
+								<Skeleton loading />
+							) : (
+								ocrText && <p style={{ width: '592px' }}>{ocrText}</p>
+							)}
+						</div>
 					</div>
+					<div className={style.propertiesList}>
+						<div className={style.inputFieldName}>ББК</div>
+						<input className={style.inputField} name='BBK'></input>
+						<div className={style.inputFieldName}>УДК</div>
+						<input className={style.inputField} name='YDK'></input>
+						<div className={style.inputFieldName}>Автор</div>
+						<input className={style.inputField} name='author'></input>
+						<div className={style.inputFieldName}>Название издания</div>
+						<input className={style.inputField} name='publicationTitle'></input>
+						<div className={style.inputFieldName}>Год публикации</div>
+						<input className={style.inputField} name='publicationDate'></input>
+						<div className={style.inputFieldName}>ISBN</div>
+						<input className={style.inputField} name='ISBN'></input>
+						<div className={style.inputFieldName}>Город издания</div>
+						<input className={style.inputField} name='year'></input>
+						<div className={style.inputFieldName}>Тип издания</div>
+						<input className={style.inputField} name='type'></input>
+						<div className={style.inputFieldName}>Описание</div>
+						<input className={style.inputField} name='description'></input>
+					</div>
+<<<<<<< HEAD
 				</div>
 				<div className={style.propertiesList}>
 					<div className={style.inputFieldName}>ББК</div>
@@ -201,23 +226,38 @@ export default () => {
 					<div className={style.inputFieldName}>Описание</div> 
 					<input className={style.inputField} name='description' value={fieldValues[8]}></input> 
 				</div>
+=======
+>>>>>>> 01c8541c228a3ec5dabea9c34c2dae7fdb11e5af
 				</div>
 			</div>
 			<div className={style.bottom}>
 				<div className={style.bottomElement1}>
+<<<<<<< HEAD
 					<button className={style.arrowl} style={{marginLeft : '807px '}}
 					onClick={goToPreviousPage}><img src="ArrowLeft.svg" alt="Левая стрелка"/></button>
 					<div className={style.counter}>{currentPage} из {totalPages}</div>
 					<button className={style.arrowl} style={{marginRight : '426px'}}
 					onClick={goToNextPage}><img src="ArrowRight.svg" alt="Правая стрелка"/></button>
+=======
+					<button className={style.arrowl} style={{ marginLeft: '807px ' }}>
+						<img src='ArrowLeft.svg' alt='Левая стрелка' />
+					</button>
+					<div className={style.counter}>1 из 52</div>
+					<button className={style.arrowl} style={{ marginRight: '426px' }}>
+						<img src='ArrowRight.svg' alt='Правая стрелка' />
+					</button>
+>>>>>>> 01c8541c228a3ec5dabea9c34c2dae7fdb11e5af
 				</div>
 				<div className={style.bottomElement2}>
 					<button className={style.addMore}>Добавить еще</button>
 					<button className={style.save}>Сохранить</button>
-				</div>				
+				</div>
 			</div>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 01c8541c228a3ec5dabea9c34c2dae7fdb11e5af
 			{/* <div className='container'>
 				<h1>Добавление печатных изданий</h1>
 				<Row gutter={[50, 50]}>
