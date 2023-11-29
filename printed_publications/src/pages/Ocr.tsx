@@ -83,32 +83,12 @@ export default () => {
 			</div>
 		)
 	}
+
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const totalPages = 52;
-	const updateInputFields = () => {
-	// Logic to fetch data for the current page and update input fields
-	// For example, if you have an array of data for each page
-
-	// const currentPageData = getPageData(currentPage); // Implement this function
-
-	// Update input fields using the data for the current page
-	// Assuming your input fields are controlled inputs, update their values
-	// setInputValues({
-	// 	BBK: currentPageData.BBK,
-	// 	UDK: currentPageData.UDK,
-	// 	author: currentPageData.author,
-	// 	publicationTitle: currentPageData.publicationTitle,
-	// 	publicationDate: currentPageData.publicationDate,
-	// 	ISBN: currentPageData.ISBN,
-	// 	year: currentPageData.year,
-	// 	type: currentPageData.type,
-	// 	description: currentPageData.description
-	// });
-		BBK: '';
-		
-
-	};
-
+	let fieldValues = ['-', '-', '-','-', '-', '-','-', '-', '-'];
+	let fieldValuesTEST = ['1', '2', '3','4', '5', '6','8', '9', '10'];
 	const goToPreviousPage = () => {
 		if (currentPage > 1) {
 		  setCurrentPage(currentPage - 1);
@@ -122,6 +102,37 @@ export default () => {
 		  updateInputFields();
 		}
 	  };
+	const updateInputFields = () => {
+	// Logic to fetch data for the current page and update input fields
+	// For example, if you have an array of data for each page
+
+	// const currentPageData = getPageData(currentPage); // Implement this function
+	const currentPageData = fieldValuesTEST[currentPage];
+
+	// Update input fields using the data for the current page
+	// Assuming your input fields are controlled inputs, update their values
+		// fieldValues[0] = currentPageData.BBK,
+		// fieldValues[1] = currentPageData.UDK,
+		// fieldValues[2] = currentPageData.author,
+		// fieldValues[3] = currentPageData.publicationTitle,
+		// fieldValues[4] = currentPageData.publicationDate,
+		// fieldValues[5] = currentPageData.ISBN,
+		// fieldValues[6] = currentPageData.year,
+		// fieldValues[7] = currentPageData.type,
+		// fieldValues[8] = currentPageData.description
+
+		fieldValues[0] = currentPageData;
+		fieldValues[1] = currentPageData;
+		fieldValues[2] = currentPageData;
+		fieldValues[3] = currentPageData;
+		fieldValues[4] = currentPageData;
+		fieldValues[5] = currentPageData;
+		fieldValues[6] = currentPageData;
+		fieldValues[7] = currentPageData;
+		fieldValues[8] = currentPageData;
+	};
+
+
 
 	return (
 		<>
@@ -170,25 +181,25 @@ export default () => {
 						)}
 					</div>
 				</div>
-				<div className={style.propertiesList} >
+				<div className={style.propertiesList}>
 					<div className={style.inputFieldName}>ББК</div>
-					<input className={style.inputField} name='BBK'></input>
+					<input className={style.inputField} name='BBK' value={fieldValues[0]}/>
 					<div className={style.inputFieldName}>УДК</div>
-					<input className={style.inputField} name='YDK'></input>
+					<input className={style.inputField} name='YDK' value={fieldValues[1]}></input>
 					<div className={style.inputFieldName}>Автор</div>
-					<input className={style.inputField} name='author'></input>
+					<input className={style.inputField} name='author' value={fieldValues[2]}></input>
 					<div className={style.inputFieldName}>Название издания</div>
-					<input className={style.inputField} name='publicationTitle'></input>
+					<input className={style.inputField} name='publicationTitle' value={fieldValues[3]}></input>
 					<div className={style.inputFieldName}>Год публикации</div>
-					<input className={style.inputField} name='publicationDate'></input>
+					<input className={style.inputField} name='publicationDate' value={fieldValues[4]}></input>
 					<div className={style.inputFieldName}>ISBN</div>
-					<input className={style.inputField} name='ISBN'></input>
+					<input className={style.inputField} name='ISBN' value={fieldValues[5]}></input>
 					<div className={style.inputFieldName}>Город издания</div> 
-					<input className={style.inputField} name='year'></input> 
+					<input className={style.inputField} name='year' value={fieldValues[6]}></input> 
 					<div className={style.inputFieldName}>Тип издания</div> 
-					<input className={style.inputField} name='type'></input> 
+					<input className={style.inputField} name='type' value={fieldValues[7]}></input> 
 					<div className={style.inputFieldName}>Описание</div> 
-					<input className={style.inputField} name='description'></input> 
+					<input className={style.inputField} name='description' value={fieldValues[8]}></input> 
 				</div>
 				</div>
 			</div>
