@@ -64,6 +64,45 @@ export default () => {
 			</div>
 		)
 	}
+	const [currentPage, setCurrentPage] = useState(1);
+	const totalPages = 52;
+	const updateInputFields = () => {
+	// Logic to fetch data for the current page and update input fields
+	// For example, if you have an array of data for each page
+
+	// const currentPageData = getPageData(currentPage); // Implement this function
+
+	// Update input fields using the data for the current page
+	// Assuming your input fields are controlled inputs, update their values
+	// setInputValues({
+	// 	BBK: currentPageData.BBK,
+	// 	UDK: currentPageData.UDK,
+	// 	author: currentPageData.author,
+	// 	publicationTitle: currentPageData.publicationTitle,
+	// 	publicationDate: currentPageData.publicationDate,
+	// 	ISBN: currentPageData.ISBN,
+	// 	year: currentPageData.year,
+	// 	type: currentPageData.type,
+	// 	description: currentPageData.description
+	// });
+		BBK: 'XYETA';
+		
+
+	};
+
+	const goToPreviousPage = () => {
+		if (currentPage > 1) {
+		  setCurrentPage(currentPage - 1);
+		  updateInputFields();
+		}
+	  };
+	  
+	  const goToNextPage = () => {
+		if (currentPage < totalPages) {
+		  setCurrentPage(currentPage + 1);
+		  updateInputFields();
+		}
+	  };
 
 	return (
 		<>
@@ -136,16 +175,19 @@ export default () => {
 			</div>
 			<div className={style.bottom}>
 				<div className={style.bottomElement1}>
-					<button className={style.arrowl} style={{marginLeft : '807px '}}><img src="ArrowLeft.svg" alt="Левая стрелка"/></button>
-					<div className={style.counter}>1 из 52</div>
-					<button className={style.arrowl} style={{marginRight : '426px'}}><img src="ArrowRight.svg" alt="Правая стрелка"/></button>
+					<button className={style.arrowl} style={{marginLeft : '807px '}}
+					onClick={goToPreviousPage}><img src="ArrowLeft.svg" alt="Левая стрелка"/></button>
+					<div className={style.counter}>{currentPage} из {totalPages}</div>
+					<button className={style.arrowl} style={{marginRight : '426px'}}
+					onClick={goToNextPage}><img src="ArrowRight.svg" alt="Правая стрелка"/></button>
 				</div>
 				<div className={style.bottomElement2}>
 					<button className={style.addMore}>Добавить еще</button>
 					<button className={style.save}>Сохранить</button>
 				</div>				
 			</div>
-			
+
+
 			{/* <div className='container'>
 				<h1>Добавление печатных изданий</h1>
 				<Row gutter={[50, 50]}>
