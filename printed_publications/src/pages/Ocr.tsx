@@ -23,7 +23,7 @@ export default () => {
 
 	const DragDropFile = () => {
 		const [drag, setDrag] = React.useState(false)
-		const fileInputRef = useRef()
+		const fileInputRef = useRef<HTMLInputElement>(null)
 
 		const dragStartHandler = e => {
 			e.preventDefault()
@@ -38,7 +38,15 @@ export default () => {
 		const onDropHandler = e => {
 			e.preventDefault()
 			let files = [...e.dataTransfer.files]
+			console.log(files[0])
 			doOCR(files[0])
+		}
+
+		const handleClick = () => {
+			// 👇️ open file input box on click of another element
+			if (fileInputRef.current != null) {
+				fileInputRef.current.click()
+			}
 		}
 
 		return drag ? (
@@ -59,8 +67,19 @@ export default () => {
 				className={style.inputImg}
 				onChange={dragStartHandler}
 			>
-				Перетащите сюда файлы или
-				<button onClick={() => fileInputRef.current}>загрузите</button>
+				Перетащите сюда файл или&nbsp;
+				<label
+					htmlFor='filePicker'
+					style={{ color: '#550DB2', cursor: 'pointer' }}
+				>
+					загрузите
+				</label>
+				<input
+					id='filePicker'
+					style={{ visibility: 'hidden' }}
+					type='file'
+					onChange={onDropHandler}
+				></input>
 			</div>
 		)
 	}
