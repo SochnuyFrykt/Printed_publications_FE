@@ -85,7 +85,7 @@ export default () => {
 	// 	type: currentPageData.type,
 	// 	description: currentPageData.description
 	// });
-		BBK: 'XYETA';
+		BBK: '';
 		
 
 	};
