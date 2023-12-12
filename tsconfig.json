@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "sourceMap": true,
+    "esModuleInterop": true, /* Concatenate and emit output to single file. */
+    "outDir": "build", /* Redirect output structure to the directory. */
+    "rootDir": "./",
+    "resolveJsonModule": true
+  },
+  "include": [
+    "config/*.json",
+    "app.ts",
+    "routes",
+    "package.json",
+    "mails",
+    "functions",
+    "models",
+    "external"
+  ],
+  "exclude": [
+    "node_modules",
+    "client"
+  ],
+  "ts-node": {
+    "swc": true
+  }
+}
