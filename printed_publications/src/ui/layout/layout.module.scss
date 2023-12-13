@@ -7,7 +7,83 @@
 	background: #fff;
 	padding: 16px;
 	border: 16px;
-	gap: 1171px;
+}
+
+.logo {
+	margin-right: auto;
+}
+
+.buttonAdd {
+	width: 116px;
+	height: 43px;
+	background: #f0edf5;
+	border-radius: 10px;
+	border: 0px;
+	color: #550db2;
+	fontsize: 16px;
+	fontstyle: normal;
+	fontweight: 400;
+	fontlineheight: 120%;
+	cursor: pointer;
+	&:hover {
+		background: #f0edf5;
+		border: 1px solid #550db2;
+	}
+}
+
+.buttonSettings {
+	width: 126px;
+	height: 43px;
+	background: #f0edf5;
+	border-radius: 10px;
+	border: 0px;
+	color: #550db2;
+	fontsize: 16px;
+	fontstyle: normal;
+	fontweight: 400;
+	fontlineheight: 120%;
+	cursor: pointer;
+	&:hover {
+		background: #f0edf5;
+		border: 1px solid #550db2;
+	}
+}
+
+.buttonHelp {
+	width: 106px;
+	height: 43px;
+	background: #f0edf5;
+	border-radius: 10px;
+	border: 0px;
+	color: #550db2;
+	fontsize: 16px;
+	fontstyle: normal;
+	fontweight: 400;
+	fontlineheight: 120%;
+	cursor: pointer;
+	&:hover {
+		background: #f0edf5;
+		border: 1px solid #550db2;
+	}
+}
+
+.buttonExit {
+	width: 90px;
+	height: 43px;
+	background: #fff;
+	border-radius: 10px;
+	border: 2px solid #f0edf5;
+	color: #550db2;
+	fontsize: 16px;
+	fontstyle: normal;
+	fontweight: 400;
+	fontlineheight: 120%;
+	cursor: pointer;
+	&:hover {
+		color: #fff;
+		background: linear-gradient(90deg, #4d0d9f 0%, #bc1ab5 100%);
+		border: 0px;
+	}
 }
 
 .buttons {
@@ -15,7 +91,8 @@
 }
 
 .buttons button {
-	margin-right: 8px;
+	margin: 0 8px;
+	transition: 1s;
 }
 
 .buttons button:last-child {

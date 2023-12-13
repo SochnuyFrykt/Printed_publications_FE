@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { notification } from 'antd';
+import { MainContext } from "../MainContext.ts"
 import '../Styles/login.scss';
 
 //Выбор вход или регистрация
@@ -8,45 +11,50 @@ const Authorization = () => {
 
   return (
     <>
-      <div className='frame'>
-        <div className='div'>
-          <div className='div2'>
-            <div className='div3'>
-              <div
-                className={page === 'login' ? 'divwrapper' : 'divwrapper2'}
-                onClick={() => setPage('login')} >
-                <div className={page === 'login' ? 'textwrapper' : 'textwrapper2'}>
-                  Вход
+        <div className='frame'>
+            <div className='div'>
+                <div className='div2'>
+                    <div className='div3'>
+                        <div
+                            className={page === 'login' ? 'divwrapper' : 'divwrapper2'}
+                            onClick={() => setPage('login')}>
+                            <div className={page === 'login' ? 'textwrapper' : 'textwrapper2'}>
+                                Вход
+                            </div>
+                        </div>
+                        <div
+                            className={page === 'register' ? 'divwrapper' : 'divwrapper2'}
+                            onClick={() => setPage('register')}>
+                            <div
+                                className={page === 'register' ? 'textwrapper' : 'textwrapper2'}>
+                                Регистрация
+                            </div>
+                        </div>
+                    </div>
+                    <div className='div4'/>
                 </div>
-              </div>
-              <div
-                className={page === 'register' ? 'divwrapper' : 'divwrapper2'}
-                onClick={() => setPage('register')} >
-                <div
-                  className={page === 'register' ? 'textwrapper' : 'textwrapper2'}>
-                  Регистрация
+                {page === 'login' && <LoginPage/>}
+                {page === 'register' && <RegPage/>}
+                <div className='policy'>
+                    <div className='policy3'>
+                        Нажимая&nbsp;«Продолжить», вы принимаете&nbsp;
+                        <div className='policy2' style={{ width: '245px' }}>пользовательское соглашение</div>
+                        &nbsp;и
+                    </div>
+                    <div className='policy3'>
+                        <div className='policy2'>политику конфиденциальности</div>
+                        .
+                    </div>
                 </div>
-              </div>
             </div>
-            <div className='div4'/>
-          </div>
-          {page === 'login' && <LoginPage />}
-          {page === 'register' && <RegPage />}
-          <div className='policy'>
-			<div className='policy3'>
-			Нажимая&nbsp;«Продолжить», вы принимаете&nbsp;<div className='policy2' style={{width: '245px'}}>пользовательское соглашение</div>&nbsp;и
-			</div>
-            <div className='policy3'><div className='policy2'>политику конфиденциальности</div>.</div>
-          </div>
         </div>
-      </div>
     </>
   );
 };
 
 //Страница входа
 const LoginPage = () => {
-  const navigate = useNavigate();
+  const {setUser} = useContext(MainContext)
 
   const onFinish = (e) => {
     e.preventDefault();
@@ -54,11 +62,36 @@ const LoginPage = () => {
     const email = formData.get('email');
     const password = formData.get('password');
 
-    if (email === '1@g' && password === '1') {
-      navigate('/');
-    } else {
-      alert('Неправильный логин или пароль');
-    }
+    // if (email === '1@g' && password === '1') {
+    //   navigate('/');
+    // } else {
+    //   alert('Неправильный логин или пароль');
+    // }
+      // Отправка запроса на сервер для входа
+      const handleLogin = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: email,
+              password: password,
+            }),
+          });
+          const loggedUser = {username: `${email}`, password: `${password}`};
+          setUser(loggedUser)
+          // const data = await response.json();
+          // console.log(data);
+          // const { token } = data;
+          // localStorage.setItem('token', token);
+          // console.log(localStorage.getItem('token'));
+        } catch (error) {
+          console.error('Ошибка:', error);
+        }
+      };
+    handleLogin();
   };
 
   return (
@@ -95,6 +128,25 @@ const RegPage = () => {
     const email = formData.get('email');
     const password = formData.get('password');
     const repeatPassword = formData.get('repeatPassword');
+    const handleRegister = async () => {
+      const response = await fetch('http://localhost:5000/register/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          username: email,
+          password: password,
+         }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        //Обработка ответа от сервера
+      })
+      .catch(error => console.error('Ошибка:', error));
+    };
+    handleRegister();
   };
 
   return (

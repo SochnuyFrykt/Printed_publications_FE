@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { createWorker } from 'tesseract.js'
 import '../Styles/App.css'
 import style from '../ui/ocr/ocr.module.scss'
-import Parser from '../ui/ocr/parser.ts'
+import parseTextByRegex from '../ui/ocr/parser.ts'
 
 export default () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -109,7 +109,26 @@ export default () => {
 
 	const [currentPage, setCurrentPage] = useState(1)
 	const [totalPage, setTotalPage] = useState(1)
-	const [fieldValues, setFieldValues] = useState(Array(9).fill('-'))
+	// const [fieldValues, setFieldValues] = useState(Array(9).fill('-'))
+	const [BBK, setBBK] = useState('-')
+	const [YDK, setYDK] = useState('-')
+	const [Author, setAuthor] = useState('-')
+	const [PublicationTitle, setPublicationTitle] = useState('-')
+	const [Year, setYear] = useState('-')
+	const [ISBN, setISBN] = useState('-')
+	const [City, setCity] = useState('-')
+	const [Type, setType] = useState('-')
+	const [Description, setDescription] = useState('-')
+
+	const myArray = ['371821','293738','392817']
+
+	const xaos = (e:React.ChangeEvent<HTMLInputElement>, name: string) => {
+		const input = e.target.value
+		if (name === "BBK" ){
+			setBBK(input)
+		}
+
+	}
 
 	const goToPreviousPage = () => {
 		if (currentPage > 1) {
@@ -117,14 +136,15 @@ export default () => {
 			// setFieldValues([`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`])
 			setCurrentPage((currentPage) => {
 				const newPage = currentPage - 1;
-				setFieldValues(Array(9).fill(`${newPage}`));
+				// setFieldValues(Array(9).fill(`${newPage}`));
+				updateInputFields()
 				return newPage;
 			  });
 		}
 	}
 
 	const addPage = () => {
-		setTotalPage((totalPage) => totalPage + 1)
+		setTotalPage(totalPage => totalPage + 1)
 	}
 
 	const goToNextPage = () => {
@@ -133,7 +153,8 @@ export default () => {
 			// setFieldValues([`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`])
 			setCurrentPage((currentPage) => {
 				const newPage = currentPage + 1;
-				setFieldValues(Array(9).fill(`${newPage}`));
+				// setFieldValues(Array(9).fill(`${newPage}`));
+				updateInputFields()
 				return newPage;
 			  });
 		}
@@ -146,25 +167,8 @@ export default () => {
 
 		// Update input fields using the data for the current page
 		// Assuming your input fields are controlled inputs, update their values
-		// fieldValues[0] = currentPageData.BBK,
-		// fieldValues[1] = currentPageData.UDK,
-		// fieldValues[2] = currentPageData.author,
-		// fieldValues[3] = currentPageData.publicationTitle,
-		// fieldValues[4] = currentPageData.publicationDate,
-		// fieldValues[5] = currentPageData.ISBN,
-		// fieldValues[6] = currentPageData.year,
-		// fieldValues[7] = currentPageData.type,
-		// fieldValues[8] = currentPageData.description
-		setFieldValues([`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`,`${currentPage}`])
-		// fieldValues[0] = `${currentPage}`
-		// fieldValues[1] = `${currentPage}`
-		// fieldValues[2] = `${currentPage}`
-		// fieldValues[3] = currentPageData
-		// fieldValues[4] = currentPageData
-		// fieldValues[5] = currentPageData
-		// fieldValues[6] = currentPageData
-		// fieldValues[7] = currentPageData
-		// fieldValues[8] = currentPageData
+
+		setBBK(myArray[currentPage-1])
 	}
 
 	return (
@@ -174,62 +178,71 @@ export default () => {
 				<div className={style.elements}>
 					<div className={style.containerOcr}>
 						{DragDropFile()}
-						{Parser(ocrText.split(' '))}
+						{parseTextByRegex()}
 					</div>
 					<div className={style.propertiesList}>
 						<div className={style.inputFieldName}>ББК</div>
 						<input
 							className={style.inputField}
 							name='BBK'
-							value={fieldValues[0]}
+							value={BBK}
+							onChange={(e) => xaos(e, "BBK")}
 						/>
 						<div className={style.inputFieldName}>УДК</div>
 						<input
 							className={style.inputField}
 							name='YDK'
-							value={fieldValues[1]}
+							value={BBK}
+							onChange={(e) => xaos(e, "BBK")}
 						></input>
 						<div className={style.inputFieldName}>Автор</div>
 						<input
 							className={style.inputField}
 							name='author'
-							value={fieldValues[2]}
+							value={BBK}
+							onChange={(e) => xaos(e, "BBK")}
 						></input>
 						<div className={style.inputFieldName}>Название издания</div>
 						<input
 							className={style.inputField}
 							name='publicationTitle'
-							value={fieldValues[3]}
+							value={BBK}
+							onChange={(e) => xaos(e, "BBK")}
 						></input>
 						<div className={style.inputFieldName}>Год публикации</div>
 						<input
 							className={style.inputField}
 							name='publicationDate'
-							value={fieldValues[4]}
+							value={BBK}
+							onChange={(e) => xaos(e, "BBK")}
 						></input>
 						<div className={style.inputFieldName}>ISBN</div>
 						<input
 							className={style.inputField}
 							name='ISBN'
-							value={fieldValues[5]}
+							value={BBK}
+							onChange={(e) => xaos(e, "BBK")}
 						></input>
 						<div className={style.inputFieldName}>Город издания</div>
 						<input
 							className={style.inputField}
 							name='year'
-							value={fieldValues[6]}
+							value={BBK}
+							onChange={(e) => xaos(e, "BBK")}
 						></input>
 						<div className={style.inputFieldName}>Тип издания</div>
 						<input
 							className={style.inputField}
 							name='type'
-							value={fieldValues[7]}
+							value={BBK}
+							onChange={(e) => xaos(e, "BBK")}
 						></input>
 						<div className={style.inputFieldName}>Описание</div>
 						<input
 							className={style.inputField}
 							name='description'
-							value={fieldValues[8]}
+							value={BBK}
+							onChange={(e) => xaos(e, "BBK")}
 						></input>
 					</div>
 				</div>
