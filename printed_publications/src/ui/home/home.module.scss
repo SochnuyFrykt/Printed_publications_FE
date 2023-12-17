@@ -116,7 +116,7 @@
     background: #F0EDF5;
     position: absolute;
     right: 6px;
-    cursor: pointer;
+    border: none;
 }
 
 .listActions{
@@ -139,7 +139,8 @@
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
-    margin-right: 246px;
+    // margin-right: 246px;
+    margin-right: 412px;
 
 }
 
@@ -155,9 +156,12 @@
     align-items: center;
 
     .exportButton{
+        display: flex;
+        width: 127px;
+        padding: 8px 20px 8px 16px;
+        align-items: center;
         width: 127px;
         font-size: 16px;
-        padding: 8px 16px;
         color: #550DB2;
         border-color: #D8C5F0;
         transition: border-color 0.3s;
@@ -169,9 +173,12 @@
         margin-right: 0px;
       }
       .deleteButton{
-        width: 125px;
+        display: inline-flex;
+        padding: 8px 20px 8px 16px;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
         font-size: 16px;
-        padding: 8px 16px;
         color: #F44B4B;
         border-color: #F4C2C2;
         transition: border-color 0.3s;
@@ -182,9 +189,13 @@
         }
       }
       .editButton{
+        display: inline-flex;
+        padding: 8px 20px 8px 16px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
         width: 180px;
         font-size: 16px; 
-        padding: 8px 16px;
         color: #6AB20D;
         border-color: #B8D395;
         transition: border-color 0.3s;

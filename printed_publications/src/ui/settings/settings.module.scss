@@ -7,6 +7,11 @@
     margin-bottom: 5px;
     display: flex;
     padding: 20px;
+    outline: none;
+    transition: 1s;
+    &:hover {
+		border: 1px solid #550db2;
+	}
 }
 
 .inputBoxName{
@@ -51,6 +56,11 @@
     line-height: 20px;
     color: #FFFFFF;
     margin-top: 52px;
+    border: none;
+    cursor: pointer;
+    &:hover {
+        background-color: #3F0789;
+	}
 }
 
 .page_name{
@@ -58,7 +68,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 16px 28px;
+    padding: 0px 28px;
     gap: 10px;
     font-family: 'Inter';
     font-style: normal;
@@ -82,18 +92,21 @@
     left: 1000px;
     top: -20px;
 
-    background: #F9F9FC;
-    border: 1px solid #E6EAF8;
+    background: #F44B4B;
     border-radius: 10px;
+    border: none;
 
-    font-family: 'Inter';
+    color: #FFF;
+    font-family: Inter;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    font-size: 16px;
     line-height: 20px;
     /* identical to box height, or 125% */
-
-    color: #000000;
+    cursor: pointer;
+    &:hover {
+        background-color: #C93030;
+	}
 }
 
 .block{
@@ -113,6 +126,14 @@
 
 .closedEye{
     position:absolute;
-    top:275px;
+    top:242px;
     left:550px;
+    cursor: pointer;
+}
+
+.Eye{
+    position:absolute;
+    top:238px;
+    left:546px;
+    cursor: pointer;
 }

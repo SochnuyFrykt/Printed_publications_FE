@@ -14,7 +14,7 @@ const Layout: React.FC<{ children: ReactNode}> = ({ children }) => {
 						<img src='Logo.svg' alt='Логотип' />
 					</Link>
 				</div>
-				{user.username &&
+				{user.email &&
 				<div className={style.buttons}>
 					<Link to={'/ocr'}>
 						<button className={style.buttonAdd}>Добавить</button>
@@ -26,7 +26,7 @@ const Layout: React.FC<{ children: ReactNode}> = ({ children }) => {
 						<button className={style.buttonHelp}>Помощь</button>
 					</Link>
 					<Link to={'/login'}>
-						<button className={style.buttonExit}>Выйти</button>
+						<button className={style.buttonExit} onClick={logout}>Выйти</button>
 					</Link>
 				</div>
 			}

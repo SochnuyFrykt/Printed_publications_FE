@@ -28,7 +28,7 @@ export const useRouter: React.FC<{ user: IUser }> = ({ user }) => {
     return (
         <>
             {pages.map(page =>
-                page.needAuth == !!user.username ?
+                page.needAuth == !!user.email ?
                 <Route
                     key={page.path}
                     {...page}
