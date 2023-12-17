@@ -5,7 +5,7 @@ import {
   DownloadOutlined,
 } from '@ant-design/icons';
 import style from '../ui/home/home.module.scss'
-// import { Book } from '../../types/Book.ts'
+import { Book } from '../../types/Book.ts'
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import type { InputRef } from 'antd';
 import { Form, Input, Popconfirm, Table, Select } from 'antd';
@@ -29,20 +29,6 @@ export default () => {
 
   const filterOptionDrop = (input: string, option?: { label: string; value: string }) =>
     (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
-
-  interface Book {
-    key: string;
-    author: string;
-    title: string;
-    date: number;
-    city: string;
-    description?: string;
-    quantity: number;
-    lbc: string;
-    udc: string;
-    ISBN: string;
-    publication_type: string;
-  }
 
   interface EditableRowProps {
     index: number;
@@ -105,9 +91,9 @@ export default () => {
 
     let childNode = children;
 
-    const columnRules = {
-      author: { required: true },
-    };
+    // const columnRules = {
+    //   author: { required: true },
+    // };
 
     if (editable) {
       childNode = editing ? (
@@ -155,7 +141,6 @@ export default () => {
       const userString = localStorage.getItem('user');
       const user = userString ? JSON.parse(userString) : null;
       try {
-        //Переделать через env
         const response = await fetch('http://localhost:5000/loadList', {
           method: 'POST',
           headers: {
@@ -197,7 +182,6 @@ export default () => {
       const indexBD = parseInt(String(key), 10);
       const handleDeleteBD = async () => {
         try {
-          //Переделать через env
           const response = await fetch('http://localhost:5000/deleteBook', {
             method: 'POST',
             headers: {
@@ -291,7 +275,6 @@ export default () => {
       });
       const handleEditBook = async () => {
         try {
-          //Переделать через env
           const response = await fetch('http://localhost:5000/editBook', {
             method: 'POST',
             headers: {
@@ -413,7 +396,6 @@ export default () => {
       } else {
         console.log('Автор не использовался')
       }
-      console.log('------------------')
       setBookData(newData);
 
     }
@@ -424,8 +406,7 @@ export default () => {
     const handleConfirm = async () => {
       console.log('Действие подтверждено');
       setModalVisible(false);
-            try {
-        //Переделать через env
+      try {
         const response = await fetch('http://localhost:5000/deleteAllBooks', {
           method: 'POST',
           headers: {
@@ -478,16 +459,12 @@ export default () => {
                   defaultValue={optionsDrop.length > 0 ? optionsDrop[0].value : undefined}
                 />
               </div>
-              {/* <button style={{ backgroundColor: '#550DB2', color: 'white', width: '142px' }}>
-                Применить
-              </button> */}
             </div>
           </div>
 
           <div className={style.frc}>
             <div className={style.listActions}>
               <div className={style.Text1}>Действия со списком</div>
-              {/* <Tag color='#EAF3DE' icon={<EditOutlined/>} className={style.editButton}>Редактировать</Tag> */}
               <Tag color='#FEE' icon={<DeleteOutlined />} className={style.deleteButton} onClick={() => setModalVisible(true)}>Удалить всё</Tag>
               <ConfirmationModal
                 visible={isModalVisible}

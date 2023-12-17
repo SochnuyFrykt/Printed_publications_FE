@@ -4,15 +4,15 @@ import { createWorker } from 'tesseract.js'
 import '../Styles/App.css'
 import style from '../ui/ocr/ocr.module.scss'
 import parseTextByRegex from '../ui/ocr/parser.ts'
+import { Book } from '../../types/Book.ts'
+
 
 export default () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [ocrText, setOcrText] = useState<string>('')
 
-	var parseText
-	var recognizedTextArray = []
-	var ImgArray
-
+	const [recognizedTextArray, setRecognizedTextArray] = useState<Array<{ [key: string]: string }>>([]);
+	const [ImgArray, setImgArray] = useState<string[]>([]);
 	const doOCR = async (file: any) => {
 		setOcrText('')
 		setIsLoading(true)
@@ -21,12 +21,31 @@ export default () => {
 			logger: m => console.log(Math.floor(m.progress * 100)),
 		})
 
-		const { data } = await worker.recognize(file)
-		setOcrText(data.text)
-		setIsLoading(false)
-		parseText = parseTextByRegex(data.text)
-		//recognizedTextArray.push(parseText)
-		handleInfo()
+		// const { data } = await worker.recognize(file)
+		// setOcrText(data.text)
+		// setIsLoading(false)
+		// parseText = parseTextByRegex(data.text)
+		// console.log(parseText)
+		// setRecognizedTextArray(prevState => [...prevState, parseText]);
+
+		worker.recognize(file)
+			.then(({ data }) => {
+				setOcrText(data.text);
+				setIsLoading(false);
+				const parseText = parseTextByRegex(data.text);
+				console.log(parseText);
+				setRecognizedTextArray((prevState) => {
+					const newState = [...prevState, parseText];
+					setImgArray(prevState => [...prevState, URL.createObjectURL(file)]);
+					setTotalPage((totalPage) => totalPage + 1);
+					return newState;
+				});
+			})
+			.catch((error) => {
+				console.error('Ошибка во время распознавания:', error);
+				setIsLoading(false);
+			});
+
 	}
 
 	const [drag, setDrag] = React.useState(false)
@@ -41,7 +60,7 @@ export default () => {
 	const dragLeaveHandler = e => {
 		e.preventDefault()
 		setDrag(false)
-		addPage()
+		// addPage()
 	}
 
 	const onDropHandler = e => {
@@ -53,14 +72,12 @@ export default () => {
 		}
 	}
 
-	const handleChange = async(e) => {
+	const handleChange = async (e) => {
 		e.preventDefault()
 		let files = [...e.target.files]
-		setTotalPage(files.length)
 		if (files) {
 			for (let i = 0; i < files.length; i++) {
 				await doOCR(files[i])
-				setImage(URL.createObjectURL(files[i]))
 			}
 		}
 	}
@@ -74,12 +91,17 @@ export default () => {
 				onDrop={e => onDropHandler(e)}
 				className={style.dropImg}
 			>
-				<img
-					alt='Загружаемое изображение'
-					src={image}
-					height='637px'
-					width='408px'
-				/>
+				{currentPage >= 1 ? (
+					<img
+						alt='Загружаемое изображение'
+						src={image}
+						height='637px'
+						width='408px'
+					/>
+				) : (
+					<p>Нажмите стрелку вправо, когда первое изображение будет обработано.
+					</p>
+				)}
 			</div>
 		) : (
 			<div
@@ -103,6 +125,7 @@ export default () => {
 						type='file'
 						ref={fileInputRef}
 						onChange={handleChange}
+						accept='.jpg, .jpeg, .png'
 						multiple
 					></input>
 				</div>
@@ -110,8 +133,8 @@ export default () => {
 		)
 	}
 
-	const [currentPage, setCurrentPage] = useState(1)
-	const [totalPage, setTotalPage] = useState(1)
+	const [currentPage, setCurrentPage] = useState(0)
+	const [totalPage, setTotalPage] = useState(0)
 
 	const useInputInfo = () => {
 		const [BBK, setBBK] = useState('')
@@ -165,45 +188,45 @@ export default () => {
 
 	const unRecognizet = 'Не распознано'
 
-	const handleInfo = () => {
+	const handleInfo = (i: number) => {
 		setBBK(
-			`${parseText.get('ББК')}` != 'undefined'
-				? `${parseText.get('ББК')}`
+			`${recognizedTextArray[i]['ББК']}` != 'undefined'
+				? `${recognizedTextArray[i]['ББК']}`
 				: unRecognizet
 		)
 		setYDK(
-			`${parseText.get('УДК')}` != 'undefined'
-				? `${parseText.get('УДК')}`
+			`${recognizedTextArray[i]['УДК']}` != 'undefined'
+				? `${recognizedTextArray[i]['УДК']}`
 				: unRecognizet
 		)
 		setAuthor(
-			`${parseText.get('Автор')}` != 'undefined'
-				? `${parseText.get('Автор')}`
+			`${recognizedTextArray[i]['Автор']}` != 'undefined'
+				? `${recognizedTextArray[i]['Автор']}`
 				: unRecognizet
 		)
 		setPublicationTitle(
-			`${parseText.get('Название книги')}` !== 'undefined'
-				? `${parseText.get('Название книги')}`
+			`${recognizedTextArray[i]['Название книги']}` !== 'undefined'
+				? `${recognizedTextArray[i]['Название книги']}`
 				: unRecognizet
 		)
 		setYear(
-			`${parseText.get('Год публикации')}` !== 'undefined'
-				? `${parseText.get('Год публикации')}`
+			`${recognizedTextArray[i]['Год публикации']}` !== 'undefined'
+				? `${recognizedTextArray[i]['Год публикации']}`
 				: unRecognizet
 		)
 		setISBN(
-			`${parseText.get('ISBN')}` !== 'undefined'
-				? `${parseText.get('ISBN')}`
+			`${recognizedTextArray[i]['ISBN']}` !== 'undefined'
+				? `${recognizedTextArray[i]['ISBN']}`
 				: unRecognizet
 		)
 		setCity(
-			`${parseText.get('Город издания')}` !== 'undefined'
-				? `${parseText.get('Город издания')}`
+			`${recognizedTextArray[i]['Город издания']}` !== 'undefined'
+				? `${recognizedTextArray[i]['Город издания']}`
 				: unRecognizet
 		)
 		setType(
-			`${parseText.get('Тип издания')}` !== 'undefined'
-				? `${parseText.get('Тип издания')}`
+			`${recognizedTextArray[i]['Тип издания']}` !== 'undefined'
+				? `${recognizedTextArray[i]['Тип издания']}`
 				: unRecognizet
 		)
 	}
@@ -224,8 +247,8 @@ export default () => {
 	const goToPreviousPage = () => {
 		if (currentPage > 1) {
 			setCurrentPage(currentPage => {
-				const newPage = currentPage - 1
-				updateInputFields()
+				const newPage = currentPage - 1;
+				updateInputFields(newPage)
 				return newPage
 			})
 		}
@@ -239,18 +262,14 @@ export default () => {
 		if (currentPage < totalPage) {
 			setCurrentPage(currentPage => {
 				const newPage = currentPage + 1
-				updateInputFields()
+				updateInputFields(newPage)
 				return newPage
 			})
 		}
 	}
-	const updateInputFields = () => {
-		// Logic to fetch data for the current page and update input fields
-		// For example, if you have an array of data for each page
-		//const currentPageData = getPageData(currentPage); // Implement this function
-		// Update input fields using the data for the current page
-		// Assuming your input fields are controlled inputs, update their values
-		//setBBK(myArray[currentPage - 1])
+	const updateInputFields = (page: number) => {
+		handleInfo(page - 1)
+		setImage(ImgArray[page - 1])
 	}
 
 	const inputInfo = [
@@ -301,6 +320,47 @@ export default () => {
 		},
 	]
 
+	const saveBook = () => {
+		const userString = localStorage.getItem('user');
+		const user = userString ? JSON.parse(userString) : null;
+		
+		const yearString = recognizedTextArray[currentPage-1]['Год публикации'];
+		let yearNumber = yearString !== null ? parseInt(yearString, 10) : 0;
+		if (isNaN(yearNumber)){
+			yearNumber = 0;
+		}
+		console.log(yearNumber);
+		const dbBook: Book = {
+			id_user: user.id,
+			author: recognizedTextArray[currentPage-1]['Автор'],
+			title: recognizedTextArray[currentPage-1]['Название книги'],
+			date: yearNumber, 
+			city: recognizedTextArray[currentPage-1]['Город издания'],
+			description: "",
+			quantity: 1,
+			lbc: recognizedTextArray[currentPage-1]['ББК'],
+			udc: recognizedTextArray[currentPage-1]['УДК'],
+			ISBN: recognizedTextArray[currentPage-1]['ISBN'],
+			publication_type: recognizedTextArray[currentPage-1]['Тип издания'],
+		};
+
+		const handleAddBook = async () => {
+			try {
+				//Переделать через env
+				const response = await fetch('http://localhost:5000/addBook', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(dbBook),
+				});
+			} catch (error) {
+				console.error('Ошибка:', error);
+			}
+		};
+		handleAddBook();
+	}
+
 	return (
 		<>
 			<div className={style.container}>
@@ -308,6 +368,19 @@ export default () => {
 				<div className={style.elements}>
 					<div className={style.containerOcr}>{DragDropFile()}</div>
 					<div className={style.propertiesList}>
+						{/* {inputInfo.map(info => (
+							<>
+								<div key={currentPage} className={style.inputFieldName}>
+									{info.title}
+								</div>
+								<input
+									className={style.inputField}
+									name={info.name}
+									value={info.value}
+									onChange={e => xaos(e, info.name)}
+								/>
+							</>
+						))} */}
 						{inputInfo.map(info => (
 							<>
 								<div key={currentPage} className={style.inputFieldName}>
@@ -318,6 +391,7 @@ export default () => {
 									name={info.name}
 									value={info.value}
 									onChange={e => xaos(e, info.name)}
+									type={info.name === 'year_publication' ? 'number' : 'text'} 
 								/>
 							</>
 						))}
@@ -338,7 +412,7 @@ export default () => {
 					</div>
 					<button
 						className={style.arrowl}
-						style={{ marginRight: '394px' }}
+						style={{ marginRight: '600px' }}
 						onClick={goToNextPage}
 					>
 						<img src='ArrowRight.svg' alt='Правая стрелка' />
@@ -348,7 +422,7 @@ export default () => {
 					{/* <button className={style.addMore} onClick={e => dragLeaveHandler(e)}>
 						Добавить еще
 					</button> */}
-					<button className={style.save}>Сохранить</button>
+					<button className={style.save} onClick={saveBook}>Сохранить</button>
 				</div>
 			</div>
 		</>

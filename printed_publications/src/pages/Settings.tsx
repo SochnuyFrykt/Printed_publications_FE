@@ -4,7 +4,7 @@ import TextArea from "antd/es/input/TextArea"
 import React from "react"
 import { useContext, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import styled from "../Styles/settings/settings.module.scss"
+import styled from "../ui/settings/settings.module.scss"
 import { MainContext } from '../MainContext.ts'
 import { IUser } from '../../types/User.ts'
 import ConfirmationModal from "../ui-kit/confirmation/confirmation.tsx"

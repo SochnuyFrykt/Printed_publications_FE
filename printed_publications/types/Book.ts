@@ -11,4 +11,5 @@ export interface Book {
     udc: string;
     ISBN: string;
     publication_type: string;
+    key?: string;
   }

@@ -48,6 +48,8 @@
 
 
 // export default parseTextByRegex
+
+
 const parseTextByRegex = text => {
 	let array = text
 		.replace(/[\n\r]+/g, ' ')
@@ -68,11 +70,11 @@ const parseTextByRegex = text => {
 	let result = {
 		'Год публикации': '',
 		'Город издания': '',
-    'ISBN': '',
-    'ББК': '',
-    'УДК': '',
-    'Автор': '',
-    'Название книги': '',
+		'ISBN': '',
+		'ББК': '',
+		'УДК': '',
+		'Автор': '',
+		'Название книги': '',
 	}
 
 	for (let i = 0; i < array.length; i++) {
@@ -81,24 +83,73 @@ const parseTextByRegex = text => {
 		} else if (regExp.cityRegex.test(array[i]) && array[i + 1] == ':') {
 			result['Город издания'] = array[i]
 		} else if (regExp.isbnRegex.test(array[i])) {
-			result['ISBN']=array[i + 1]
+			result['ISBN'] = array[i + 1]
 		} else if (regExp.bbkRegex.test(array[i])) {
-			result['ББК']= array[i + 1]
+			result['ББК'] = array[i + 1]
 		} else if (regExp.udkRegex.test(array[i])) {
-			result['УДК']= array[i + 1]
+			result['УДК'] = array[i + 1]
 		} else if (array[i] === result['Год публикации']) {
-			result['Автор']= `${array[i + 1]} ${array[i + 2]} ${array[i + 3]}`
+			result['Автор'] = `${array[i + 1]} ${array[i + 2]} ${array[i + 3]}`
 		} else if (regExp.titleRegex.test(array[i])) {
-			result[
-				'Название книги'] =
+			result['Название книги'] =
 				`${array[i - 4]} ${array[i - 3]} ${array[i - 2]} ${array[i - 1]}`
-			
+
 		}
-		result['Тип издания'] =  'Художественное'
+		result['Тип издания'] = 'Художественное'
 	}
 
-	console.log(result)
+	// console.log(result)
 	return result
 }
 
 export default parseTextByRegex
+
+// Попробовал чуть переделать парсер
+
+// const parseTextByRegex = text => {
+// 	const cleanText = text.replace(/[\n\r]+/g, ' ').replace('|', ' ').replace(/\s+/g, ' ').trim();
+// 	const array = cleanText.split(' ');
+
+// 	const regExp = {
+// 		bbkRegex: /ББК/,
+// 		udkRegex: /УДК/,
+// 		authorRegex: /^[А-ЯЁ][а-яё]+(\s[А-ЯЁ]\.)?\s[А-ЯЁ]\.$/,
+// 		titleRegex: /^[^:]+:$/,
+// 		yearRegex: /\d{4}/,
+// 		isbnRegex: /ISBN/,
+// 		cityRegex: /[М,С,Т,Н,И]/,
+// 	};
+
+// 	let result = {
+// 		'Год публикации': '',
+// 		'Город издания': '',
+// 		'ISBN': '',
+// 		'ББК': '',
+// 		'УДК': '',
+// 		'Автор': '',
+// 		'Название книги': '',
+// 		'Тип издания': 'Художественное',
+// 	};
+
+// 	for (let i = 0; i < array.length; i++) {
+// 		if (regExp.yearRegex.test(array[i])) {
+// 			result['Год публикации'] = array[i];
+// 		} else if (regExp.cityRegex.test(array[i]) && array[i + 1] === ':') {
+// 			result['Город издания'] = array[i];
+// 		} else if (regExp.isbnRegex.test(array[i])) {
+// 			result['ISBN'] = array[i + 1];
+// 		} else if (regExp.bbkRegex.test(array[i])) {
+// 			result['ББК'] = array[i + 1];
+// 		} else if (regExp.udkRegex.test(array[i])) {
+// 			result['УДК'] = array[i + 1];
+// 		} else if (regExp.authorRegex.test(array[i] + ' ' + array[i + 1] + ' ' + array[i + 2])) {
+// 			result['Автор'] = array[i] + ' ' + array[i + 1] + ' ' + array[i + 2];
+// 		} else if (regExp.titleRegex.test(array[i])) {
+// 			result['Название книги'] = array[i].replace(':', '');
+// 		}
+// 	}
+
+// 	return result;
+// };
+
+// export default parseTextByRegex;
